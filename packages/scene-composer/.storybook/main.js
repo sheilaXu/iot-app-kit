@@ -54,6 +54,18 @@ module.exports = {
       options: {
         name: '[path][name].[ext]'
       }
+    }, {
+      test: /\.hiro$/,
+      loader: 'file-loader',
+      options: {
+        name: '[path][name].[ext]'
+      }
+    },{
+      test: /\.dat$/,
+      loader: 'file-loader',
+      options: {
+        name: '[path][name].[ext]'
+      }
     })    // Return the altered config
 
     return config;

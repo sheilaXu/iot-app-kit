@@ -2,22 +2,22 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-pascal-case */
 
-import React from "react"
-import { Canvas } from "@react-three/fiber"
+import React from 'react';
+import { Canvas } from '@react-three/fiber';
 
-import { AR } from "./ar"
+import { AR } from './ar';
 
 const ARCanvas = ({
   arEnabled = true,
   tracking = true,
   children,
   patternRatio = 0.5,
-  detectionMode = "mono_and_matrix",
-  cameraParametersUrl = "data/camera_para.dat",
-  matrixCodeType = "3x3",
-  sourceType = "webcam",
-  onCameraStreamReady,
-  onCameraStreamError,
+  detectionMode = 'mono_and_matrix',
+  cameraParametersUrl = 'src/data/camera_para.dat',
+  matrixCodeType = '3x3',
+  sourceType = 'webcam',
+  onCameraStreamReady = () => null,
+  onCameraStreamError = () => null,
   ...props
 }) => (
   <Canvas camera={arEnabled ? { position: [0, 0, 0] } : props.camera} {...props}>
@@ -30,13 +30,14 @@ const ARCanvas = ({
         sourceType={sourceType}
         cameraParametersUrl={cameraParametersUrl}
         onCameraStreamReady={onCameraStreamReady}
-        onCameraStreamError={onCameraStreamError}>
+        onCameraStreamError={onCameraStreamError}
+      >
         {children}
       </AR>
     ) : (
       children
     )}
   </Canvas>
-)
+);
 
-export default ARCanvas
+export default ARCanvas;
