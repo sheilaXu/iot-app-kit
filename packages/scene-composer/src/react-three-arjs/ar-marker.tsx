@@ -12,7 +12,7 @@ const ARMarker = ({ children, type, barcodeValue = null, patternUrl, params = {}
   const [isFound, setIsFound] = useState(false);
 
   useEffect(() => {
-    if (!arToolkitContext) {
+    if (!arToolkitContext || !markerRoot.current) {
       return;
     }
 
@@ -27,7 +27,7 @@ const ARMarker = ({ children, type, barcodeValue = null, patternUrl, params = {}
       const index = arToolkitContext._arMarkersControls.indexOf(markerControls);
       arToolkitContext._arMarkersControls.splice(index, 1);
     };
-  }, []);
+  }, [markerRoot.current]);
 
   useFrame(() => {
     if (markerRoot.current?.visible && !isFound) {

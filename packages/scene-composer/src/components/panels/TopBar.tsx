@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import styled from 'styled-components';
-import { ButtonDropdown, SpaceBetween } from '@awsui/components-react';
+import { Box, ButtonDropdown, SpaceBetween, Toggle } from '@awsui/components-react';
 import { useIntl } from 'react-intl';
 
 import { KnownComponentType } from '../../interfaces';
 import { sceneComposerIdContext } from '../../common/sceneComposerIdContext';
-import { ICameraComponentInternal, useStore, useViewOptionState } from '../../store';
+import { ICameraComponentInternal, useEditorState, useStore, useViewOptionState } from '../../store';
 import { Checked } from '../../assets/auto-gen/icons';
 import useActiveCamera from '../../hooks/useActiveCamera';
 import { findComponentByType } from '../../utils/nodeUtils';
@@ -24,6 +24,8 @@ export const TopBar: FC = () => {
   const getComponentRefByType = useStore(sceneComposerId)((state) => state.getComponentRefByType);
   const getObject3DBySceneNodeRef = useStore(sceneComposerId)((state) => state.getObject3DBySceneNodeRef);
   const { setActiveCameraSettings } = useActiveCamera();
+  const showAr = useStore(sceneComposerId)((state) => state.showAr);
+  const setShowAr = useStore(sceneComposerId)((state) => state.setShowAr);
   const intl = useIntl();
 
   const cameraItems = useMemo(() => {
@@ -65,6 +67,11 @@ export const TopBar: FC = () => {
   if (showTopBar) {
     return (
       <StyledSpaceBetween direction='horizontal' size='xxs'>
+        <Box textAlign={'center'} margin={'xxs'} >
+          <div style={{ transform: 'scale(1.2)', paddingRight: '12px' }}>
+            <Toggle checked={showAr} onChange={(e) => setShowAr(e.detail.checked)} >AR mode</Toggle>
+          </div>
+        </Box>
         {hasMotionIndicator && (
           <ButtonDropdown
             data-testid={'view-options'}

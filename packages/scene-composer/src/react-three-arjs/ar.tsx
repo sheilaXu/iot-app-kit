@@ -62,11 +62,11 @@ const AR = ({
   }, [onResize, arContext]);
 
   useEffect(() => {
-    arContext.arToolkitContext.init(() =>
+    arContext.arToolkitContext?.init(() =>
       camera.projectionMatrix.copy(arContext.arToolkitContext.getProjectionMatrix()),
     );
 
-    arContext.arToolkitSource.init(() => {
+    arContext.arToolkitSource?.init(() => {
       const video: any = document.querySelector(videoDomElemSelector);
       video.style.position = 'fixed';
       video.style.pointerEvents = 'none';

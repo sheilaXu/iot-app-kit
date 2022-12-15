@@ -42,6 +42,9 @@ export interface IEditorStateSlice {
   /* Editor Config */
   editorConfig: IEditorConfig;
 
+  showAr: boolean;
+  setShowAr(show: boolean): void;
+
   setEditorConfig(config: IEditorConfig, replace?: boolean): void;
   getEditorConfig(): IEditorConfig;
 
@@ -139,6 +142,7 @@ function createDefaultEditorState() {
         position: DEFAULT_CAMERA_POSITION,
       },
     },
+    showAr: false,
   };
 }
 
@@ -153,6 +157,12 @@ export const createEditStateSlice = (set: SetState<RootState>, get: GetState<Roo
       showAssetBrowserCallback: undefined,
       onWidgetClick: undefined,
       onSelectionChanged: undefined,
+    },
+
+    setShowAr(show) {
+      set((draft) => {
+        draft.showAr = show;
+      })
     },
 
     getEditorConfig() {

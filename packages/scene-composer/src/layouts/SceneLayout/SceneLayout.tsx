@@ -29,6 +29,7 @@ import { findComponentByType } from '../../utils/nodeUtils';
 import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import CameraPreviewTrack from './components/CameraPreviewTrack';
+import ARCanvasManager from '../../components/ARCanvasManager';
 
 const UnselectableCanvas = styled(Canvas)`
   user-select: none;
@@ -82,6 +83,8 @@ const SceneLayout: FC<SceneLayoutProps> = ({ isViewing, onPointerMissed, Loading
 
   const rightPanel = <RightPanel {...rightPanelProps} />;
 
+  const showAr = useStore(sceneComposerId)((state) => state.showAr);
+
   return (
     <StaticLayout
       mainContent={
@@ -91,19 +94,25 @@ const SceneLayout: FC<SceneLayoutProps> = ({ isViewing, onPointerMissed, Loading
             {shouldShowPreview && (
               <CameraPreviewTrack ref={renderDisplayRef} title={selectedNode.selectedSceneNode?.name} />
             )}
-            <UnselectableCanvas shadows dpr={window.devicePixelRatio} onPointerMissed={onPointerMissed}>
-              <ContextBridge>
-                {/* TODO: Add loading view */}
-                <Suspense fallback={LoadingView}>
-                  {!sceneLoaded ? null : (
-                    <Fragment>
-                      <WebGLCanvasManager />
-                      {shouldShowPreview && <CameraPreview track={renderDisplayRef} />}
-                    </Fragment>
-                  )}
-                </Suspense>
-              </ContextBridge>
-            </UnselectableCanvas>
+            {
+              showAr ? (
+              <ARCanvasManager />
+            ) : (
+              <UnselectableCanvas shadows dpr={window.devicePixelRatio} onPointerMissed={onPointerMissed}>
+                <ContextBridge>
+                  {/* TODO: Add loading view */}
+                  <Suspense fallback={LoadingView}>
+                    {!sceneLoaded ? null : (
+                      <Fragment>
+                        <WebGLCanvasManager />
+                        {shouldShowPreview && <CameraPreview track={renderDisplayRef} />}
+                      </Fragment>
+                    )}
+                  </Suspense>
+                </ContextBridge>
+              </UnselectableCanvas>
+            )
+          }
           </LogProvider>
         </Fragment>
       }

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import * as awsui from '@awsui/design-tokens';
 import { Box } from '@awsui/components-react';
+import { sceneComposerIdContext } from '../../common/sceneComposerIdContext';
+import { useStore } from '../../store';
 
-const LayoutContainerBox = styled(Box)`
+const LayoutContainerBox = styled(Box)<{ setBackgroundColor?: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: ${awsui.colorBackgroundLayoutMain};
+  background-color: ${({setBackgroundColor}) => setBackgroundColor ? awsui.colorBackgroundLayoutMain : undefined};
 `;
 
 const HeaderContainerBox = styled(Box)`
@@ -120,8 +122,11 @@ const StaticLayout: React.FC<IStaticLayoutProps> = ({
   footer,
   topBar,
 }: IStaticLayoutProps) => {
+  const sceneComposerId = useContext(sceneComposerIdContext);
+  const showAr = useStore(sceneComposerId)((state) => state.showAr);
+
   return (
-    <LayoutContainerBox>
+    <LayoutContainerBox setBackgroundColor={!showAr}>
       {!!showModal && <ModalWrapper>{modalContent}</ModalWrapper>}
 
       {!!header && <HeaderContainerBox>{header}</HeaderContainerBox>}

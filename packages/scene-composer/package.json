@@ -117,6 +117,7 @@
     "ttypescript": "1.5.13"
   },
   "dependencies": {
+    "@ar-js-org/ar.js": "3.4.0",
     "@awsui/collection-hooks": "^1.0.0",
     "@awsui/components-react": "^3.0.462",
     "@awsui/design-tokens": "^3.0.19",
