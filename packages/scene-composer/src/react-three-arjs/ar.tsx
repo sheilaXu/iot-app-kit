@@ -46,8 +46,8 @@ const AR = ({
   const onUnmount = useCallback(() => {
     window.removeEventListener('resize', onResize);
 
-    arContext.arToolkitContext.arController.dispose();
-    if (arContext.arToolkitContext.arController.cameraParam) {
+    arContext.arToolkitContext.arController?.dispose();
+    if (arContext.arToolkitContext.arController?.cameraParam) {
       arContext.arToolkitContext.arController.cameraParam.dispose();
     }
 
@@ -68,7 +68,7 @@ const AR = ({
 
     arContext.arToolkitSource?.init(() => {
       const video: any = document.querySelector(videoDomElemSelector);
-      video.style.position = 'fixed';
+      video.style.position = 'absolute';
       video.style.pointerEvents = 'none';
 
       video.onloadedmetadata = () => {

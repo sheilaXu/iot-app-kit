@@ -6,6 +6,7 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 
 import { AR } from './ar';
+import { DEFAULT_CAMERA_POSITION } from '../common/constants';
 
 const ARCanvas = ({
   arEnabled = true,
@@ -20,7 +21,7 @@ const ARCanvas = ({
   onCameraStreamError = () => null,
   ...props
 }) => (
-  <Canvas camera={arEnabled ? { position: [0, 0, 0] } : props.camera} {...props}>
+  <Canvas className={'ar-canvas-xxxx'} dpr={window.devicePixelRatio} style={{ position: 'absolute'}} camera={arEnabled ? { position: DEFAULT_CAMERA_POSITION } : props.camera} {...props}>
     {arEnabled ? (
       <AR
         tracking={tracking}

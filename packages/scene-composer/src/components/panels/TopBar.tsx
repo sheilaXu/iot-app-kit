@@ -67,9 +67,11 @@ export const TopBar: FC = () => {
   if (showTopBar) {
     return (
       <StyledSpaceBetween direction='horizontal' size='xxs'>
-        <Box textAlign={'center'} margin={'xxs'} >
+        <Box textAlign={'center'} margin={'xxs'}>
           <div style={{ transform: 'scale(1.2)', paddingRight: '12px' }}>
-            <Toggle checked={showAr} onChange={(e) => setShowAr(e.detail.checked)} >AR mode</Toggle>
+            <Toggle checked={showAr} onChange={(e) => setShowAr(e.detail.checked)}>
+              AR mode
+            </Toggle>
           </div>
         </Box>
         {hasMotionIndicator && (

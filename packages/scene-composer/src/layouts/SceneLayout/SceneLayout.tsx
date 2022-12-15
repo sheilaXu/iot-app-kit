@@ -25,11 +25,11 @@ import { KnownComponentType } from '../../interfaces';
 import { CameraPreview } from '../../components/three-fiber/CameraPreview';
 import useSelectedNode from '../../hooks/useSelectedNode';
 import { findComponentByType } from '../../utils/nodeUtils';
+import ARCanvasManager from '../../components/ARCanvasManager';
 
 import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
 import CameraPreviewTrack from './components/CameraPreviewTrack';
-import ARCanvasManager from '../../components/ARCanvasManager';
 
 const UnselectableCanvas = styled(Canvas)`
   user-select: none;
@@ -90,29 +90,35 @@ const SceneLayout: FC<SceneLayoutProps> = ({ isViewing, onPointerMissed, Loading
       mainContent={
         <Fragment>
           <LogProvider namespace={'SceneLayout'} ErrorView={DefaultErrorFallback}>
-            <FloatingToolbar isViewing={isViewing} />
-            {shouldShowPreview && (
-              <CameraPreviewTrack ref={renderDisplayRef} title={selectedNode.selectedSceneNode?.name} />
-            )}
-            {
-              showAr ? (
+            {showAr ? (
               <ARCanvasManager />
             ) : (
-              <UnselectableCanvas shadows dpr={window.devicePixelRatio} onPointerMissed={onPointerMissed}>
-                <ContextBridge>
-                  {/* TODO: Add loading view */}
-                  <Suspense fallback={LoadingView}>
-                    {!sceneLoaded ? null : (
-                      <Fragment>
-                        <WebGLCanvasManager />
-                        {shouldShowPreview && <CameraPreview track={renderDisplayRef} />}
-                      </Fragment>
-                    )}
-                  </Suspense>
-                </ContextBridge>
-              </UnselectableCanvas>
-            )
-          }
+              <>
+                <FloatingToolbar isViewing={isViewing} />
+                {shouldShowPreview && (
+                  <CameraPreviewTrack ref={renderDisplayRef} title={selectedNode.selectedSceneNode?.name} />
+                )}
+
+                <UnselectableCanvas
+                  className='normal-canvas-yyyy'
+                  shadows
+                  dpr={window.devicePixelRatio}
+                  onPointerMissed={onPointerMissed}
+                >
+                  <ContextBridge>
+                    {/* TODO: Add loading view */}
+                    <Suspense fallback={LoadingView}>
+                      {!sceneLoaded ? null : (
+                        <Fragment>
+                          <WebGLCanvasManager />
+                          {shouldShowPreview && <CameraPreview track={renderDisplayRef} />}
+                        </Fragment>
+                      )}
+                    </Suspense>
+                  </ContextBridge>
+                </UnselectableCanvas>
+              </>
+            )}
           </LogProvider>
         </Fragment>
       }

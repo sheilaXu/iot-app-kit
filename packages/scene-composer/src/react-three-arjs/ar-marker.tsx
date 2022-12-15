@@ -6,7 +6,15 @@ import { Object3D } from 'three';
 
 import { useAR } from './ar';
 
-const ARMarker = ({ children, type, barcodeValue = null, patternUrl, params = {}, onMarkerFound, onMarkerLost = () => null }) => {
+const ARMarker = ({
+  children,
+  type,
+  barcodeValue = null,
+  patternUrl,
+  params = {},
+  onMarkerFound,
+  onMarkerLost = () => null,
+}) => {
   const markerRoot = useRef<Object3D>();
   const { arToolkitContext } = useAR();
   const [isFound, setIsFound] = useState(false);
