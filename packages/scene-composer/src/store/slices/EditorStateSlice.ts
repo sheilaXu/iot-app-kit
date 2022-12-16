@@ -142,7 +142,7 @@ function createDefaultEditorState() {
         position: DEFAULT_CAMERA_POSITION,
       },
     },
-    showAr: false,
+    showAr: true,
   };
 }
 
@@ -162,7 +162,7 @@ export const createEditStateSlice = (set: SetState<RootState>, get: GetState<Roo
     setShowAr(show) {
       set((draft) => {
         draft.showAr = show;
-      })
+      });
     },
 
     getEditorConfig() {

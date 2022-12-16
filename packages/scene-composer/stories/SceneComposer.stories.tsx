@@ -22,6 +22,7 @@ import { useMockedValueDataBindingProvider } from './useMockedValueDataBindingPr
 
 import '@awsui/global-styles/index.css';
 import '@awsui/global-styles/dark-mode-utils.css';
+import ARCanvasManager from '../src/components/ARCanvasManager';
 const region = 'us-east-1';
 const rociEndpoint = 'https://iottwinmaker.us-east-1.amazonaws.com';
 
@@ -74,9 +75,9 @@ const commonLoaders = [
       };
 
       const loadFromLocalFn = () => {
-        const _getSceneObjectFunction: GetSceneObjectFunction = createGetSceneObjectFunction(testScenes.scene1);
+        const _getSceneObjectFunction: GetSceneObjectFunction = createGetSceneObjectFunction(testScenes.scene2);
         const _sceneLoader = {
-          getSceneUri: () => Promise.resolve(sampleSceneContentUrl1),
+          getSceneUri: () => Promise.resolve(sampleSceneContentUrl2),
           getSceneObject: _getSceneObjectFunction,
         };
         return [_sceneLoader];
@@ -260,6 +261,7 @@ export const Default: ComponentStory<typeof SceneComposerInternal> = (
   }, [args.sceneId]);
 
   return <SceneComposerInternal sceneComposerId='scene1' {...args} sceneLoader={loader} />;
+  // return (<ARCanvasManager />);
 };
 Default.parameters = {};
 Default.decorators = knobsConfigurationDecorator;
