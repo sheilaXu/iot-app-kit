@@ -42,7 +42,7 @@ type FoldableContainerProps = React.PropsWithChildren<{
 }>;
 
 const FoldableContainer: React.FC<FoldableContainerProps> = ({ direction, children }: FoldableContainerProps) => {
-  const [fold, setFold] = useState(false);
+  const [fold, setFold] = useState(true);
 
   let iconName: IconProps.Name;
   if ((fold && direction === 'Left') || (!fold && direction === 'Right')) {

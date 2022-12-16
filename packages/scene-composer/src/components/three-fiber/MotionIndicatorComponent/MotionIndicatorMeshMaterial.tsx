@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import * as THREE from 'three';
+import { VideoTexture } from 'three';
+import { videoUrl } from '../../ARCanvasManager';
 
 import { fragment } from './meshBasic_frag.glsl';
 
@@ -66,27 +68,43 @@ export const MotionIndicatorMeshMaterial: React.FC<IMotionIndicatorMeshMaterialP
   foregroundColor,
   backgroundColor,
   backgroundColorOpacity,
-  texture,
+  // texture,
 }: IMotionIndicatorMeshMaterialProps) => {
   const shaderRef = useRef<THREE.Shader>();
+  const [video, setVideo] = useState<HTMLVideoElement | undefined>(undefined);
 
   useEffect(() => {
     setShaderUniforms(shaderRef, foregroundColor, backgroundColor);
   }, [backgroundColor, foregroundColor]);
 
+  const texture = useMemo(() => {
+    const video = document.createElement('video');
+
+    video.src = videoUrl;
+    video.autoplay = true;
+    video.muted = true;
+    video.crossOrigin = 'Anonymous';
+    video.controls = true;
+
+    setVideo(video);
+    const texture = new VideoTexture(video);
+
+    return texture;
+  }, []);
+
   return (
     <meshBasicMaterial
       attach='material'
       map={texture}
-      color={foregroundColor || 'white'}
+      // color={foregroundColor || 'white'}
       side={THREE.DoubleSide}
-      transparent={true}
-      depthWrite={!foregroundColor} // disable when changing foreground color
-      opacity={backgroundColor ? backgroundColorOpacity : 1}
-      onBeforeCompile={(shader) => {
-        shaderRef.current = shader;
-        onBeforeCompile(shaderRef, foregroundColor, backgroundColor);
-      }}
+      // transparent={true}
+      // depthWrite={!foregroundColor} // disable when changing foreground color
+      // opacity={backgroundColor ? backgroundColorOpacity : 1}
+      // onBeforeCompile={(shader) => {
+      //   shaderRef.current = shader;
+      //   onBeforeCompile(shaderRef, foregroundColor, backgroundColor);
+      // }}
     />
   );
 };

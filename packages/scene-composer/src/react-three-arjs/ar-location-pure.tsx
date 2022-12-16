@@ -1,7 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import * as THREEx from '@ar-js-org/ar.js/three.js/build/ar-threex-location-only';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { MathUtils as Math} from 'three';
+import * as THREEx from '../../../../node_modules/@ar-js-org/ar.js/three.js/build/ar-threex-location-only';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { DeviceOrientationControls } from './location-based/DeviceOrientationControls';
+import { LocationBased } from './location-based/LocationBased';
 
 const ARLocation = ({}) => {
   useEffect(() => {
@@ -11,9 +14,9 @@ const ARLocation = ({}) => {
         canvas: document.querySelector('#ar-canvas-xxxx')!
     });
 
-    const geom = new THREE.BoxGeometry(20,20,20);
+    const geom = new THREE.BoxGeometry(50,50,50);
 
-    const arjs = new THREEx.LocationBased(scene, camera);
+    const arjs = new LocationBased(scene, camera);
 
     // You can change the minimum GPS accuracy needed to register a position - by default 1000m
     //const arjs = new THREEx.LocationBased(scene, camera. { gpsMinAccuracy: 30 } );
@@ -26,16 +29,21 @@ const ARLocation = ({}) => {
 
     // Orientation controls only work on mobile device
     if (isMobile()){   
-        orientationControls = new THREEx.DeviceOrientationControls(camera);
+        orientationControls = new DeviceOrientationControls(camera);
     } 
 
     let fake: any = null;
     let first = true;
 
     arjs.on("gpsupdate", pos => {
-      console.log('xxxxx pos', pos.coords)
+      console.log(`GPS updated: lat=${pos.coords.latitude}, log=${pos.coords.longitude}, alt=${pos.coords.altitude}, acc=${pos.coords.accuracy}, mobile=${isMobile()}`, navigator);
+
+      console.log('xxxxx pos coordd', pos.coords)
       if(first) {
-            setupObjects(pos.coords.longitude, pos.coords.latitude);
+        // setupObjects(pos.coords.longitude, pos.coords.latitude);
+
+            setupObjects(-122.34, 47.656);
+            // setupObjects(-122.3418, 47.656);
             first = false;
         }
     });
@@ -83,11 +91,7 @@ const ARLocation = ({}) => {
     }
 
 	function isMobile() {
-    	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        	// true for mobile device
-        	return true;
-    	}
-    	return false;
+    return typeof (navigator as any).standalone !== "undefined";
 	}
 
     function render(time) {
@@ -114,6 +118,7 @@ const ARLocation = ({}) => {
         const material2 = new THREE.MeshBasicMaterial({color: 0xffff00});
         const material3 = new THREE.MeshBasicMaterial({color: 0x0000ff});
         const material4 = new THREE.MeshBasicMaterial({color: 0x00ff00});
+
         arjs.add(new THREE.Mesh(geom, material), longitude, latitude + 0.001); // slightly north
         arjs.add(new THREE.Mesh(geom, material2), longitude, latitude - 0.001); // slightly south
         arjs.add(new THREE.Mesh(geom, material3), longitude - 0.001, latitude); // slightly west

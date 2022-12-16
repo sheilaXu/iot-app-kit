@@ -55,7 +55,7 @@ module.exports = {
         name: '[path][name].[ext]'
       }
     }, {
-      test: /\.hiro$/,
+      test: /patt\.$/,
       loader: 'file-loader',
       options: {
         name: '[path][name].[ext]'
@@ -68,6 +68,9 @@ module.exports = {
       }
     })    // Return the altered config
 
+    config.resolve.alias = {
+      three: path.resolve(__dirname, '../../../node_modules/three'),
+    }
     return config;
   },
 };
