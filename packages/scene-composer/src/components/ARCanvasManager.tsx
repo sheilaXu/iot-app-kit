@@ -1,10 +1,11 @@
 import { Button } from '@awsui/components-react';
+import { Canvas } from '@react-three/fiber';
 import React, { FC, useContext, useMemo, useState } from 'react';
 import { Euler, VideoTexture } from 'three';
 
 import { sceneComposerIdContext } from '../common/sceneComposerIdContext';
 import ARCanvas from '../react-three-arjs/ar-canvas';
-import ARLocation from '../react-three-arjs/ar-location-pure';
+import ARLocation from '../react-three-arjs/ar-location';
 import ARMarker from '../react-three-arjs/ar-marker';
 
 interface ARCanvasManagerProps {}
@@ -39,10 +40,12 @@ const ARCanvasManager: FC<ARCanvasManagerProps> = ({}) => {
     permission ?
     (locationBasedd ?
       (
-      <canvas id="ar-canvas-xxxx" style={{backgroundColor: 'black', width:'100%', height:'100%', display:'block'}}>
-        <video id='arjs-video' autoPlay playsInline style={{'display':'none'}}></video>
+        <>
+        {/* <video id='arjs-video'  style={{'display':'none'}}></video> */}
+        <Canvas id="ar-canvas-xxxx" style={{backgroundColor: 'black', width:'100%', height:'100%', display:'block'}}>
         <ARLocation />
-      </canvas>
+      </Canvas>
+      </>
       )
   :
     (<ARCanvas

@@ -142,7 +142,7 @@ function createDefaultEditorState() {
         position: DEFAULT_CAMERA_POSITION,
       },
     },
-    showAr: true,
+    showAr: false,
   };
 }
 
