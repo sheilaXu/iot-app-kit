@@ -1,6 +1,7 @@
 // Modified version of THREE.DeviceOrientationControls from three.js
 // will use the deviceorientationabsolute event if available
 
+import { debounce } from "lodash";
 import {
   Euler,
   EventDispatcher,
@@ -46,11 +47,16 @@ class DeviceOrientationControls extends EventDispatcher {
         ? "deviceorientationabsolute"
         : "deviceorientation";
 
+    console.log('xxxxx orientationChangeEventName', this.orientationChangeEventName)
+
     const onDeviceOrientationChangeEvent = function (event) {
+      console.log('xxxxx onDeviceOrientationChangeEvent', event)
       scope.deviceOrientation = event;
     };
 
     const onScreenOrientationChangeEvent = function () {
+      console.log('xxxxx onScreenOrientationChangeEvent', window.orientation)
+
       scope.screenOrientation = window.orientation || 0;
     };
 
@@ -106,7 +112,7 @@ class DeviceOrientationControls extends EventDispatcher {
         );
         window.addEventListener(
           this.orientationChangeEventName,
-          onDeviceOrientationChangeEvent
+          debounce(onDeviceOrientationChangeEvent, 500)
         );
 
       } else {

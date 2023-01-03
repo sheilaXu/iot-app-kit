@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import * as THREE from 'three';
-import { MathUtils as Math} from 'three';
 import * as THREEx from '../../../../node_modules/@ar-js-org/ar.js/three.js/build/ar-threex-location-only';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DeviceOrientationControls } from './location-based/DeviceOrientationControls';

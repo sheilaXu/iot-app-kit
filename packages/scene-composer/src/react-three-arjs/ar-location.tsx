@@ -1,12 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import * as THREE from 'three';
 // import { MathUtils as Math} from 'three';
-import * as THREEx from '../../../../node_modules/@ar-js-org/ar.js/three.js/build/ar-threex-location-only';
+// import * as THREEx from '../../../../node_modules/@ar-js-org/ar.js/three.js/build/ar-threex-location-only';
 import { PerspectiveCamera } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DeviceOrientationControls } from './location-based/DeviceOrientationControls';
 import { LocationBased } from './location-based/LocationBased';
+import { WebcamRenderer } from './location-based/webcam-renderer';
 
 export const isMobile = () => {
   return typeof (navigator as any).standalone !== "undefined";
@@ -60,10 +61,10 @@ const ARLocation = ({}) => {
       const geom = new THREE.BoxGeometry(50,50,50);
 
       // Use position of first GPS update (fake or real)
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      const material2 = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-      const material3 = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-      const material4 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const material = new THREE.MeshBasicMaterial({ color: 'red' });
+      const material2 = new THREE.MeshBasicMaterial({ color: 'blue' });
+      const material3 = new THREE.MeshBasicMaterial({ color: 'green' });
+      const material4 = new THREE.MeshBasicMaterial({ color: 'pink' });
 
       // const worldCoords = locationControls.lonLatToWorldCoords(longitude, latitude);
 
@@ -82,9 +83,13 @@ const ARLocation = ({}) => {
       rootRef.current.add(mesh3);
       rootRef.current.add(mesh4);
 
-      locationControls.add(mesh, longitude, latitude + 0.001); // slightly north
-      locationControls.add(mesh2, longitude, latitude - 0.001); // slightly south
-      locationControls.add(mesh3, longitude - 0.001, latitude); // slightly west
+      locationControls.add(mesh, -122.341848, 47.6560491); // laptop
+      locationControls.add(mesh2, -122.3418608, 47.6560743); // my table
+      locationControls.add(mesh3, -122.341834, 47.6560861); // shared table
+
+      // locationControls.add(mesh, longitude, latitude + 0.001); // slightly north
+      // locationControls.add(mesh2, longitude, latitude - 0.001); // slightly south
+      // locationControls.add(mesh3, longitude - 0.001, latitude); // slightly west
       locationControls.add(mesh4, longitude + 0.001, latitude); // slightly east
     },
     [locationControlsRef.current, rootRef.current],
@@ -100,7 +105,7 @@ const ARLocation = ({}) => {
       // { gpsMinAccuracy: 30 }
       );
 
-    const cam = new THREEx.WebcamRenderer(renderer, '#arjs-video');
+    const cam = new WebcamRenderer(renderer, '#arjs-video');
 
     const mouseStep = THREE.MathUtils.degToRad(5);
 
@@ -114,7 +119,8 @@ const ARLocation = ({}) => {
     const fake: any = null;
 
     locationControls.on('gpsupdate', (pos) => {
-      console.log(`GPS updated: lat=${pos.coords.latitude}, log=${pos.coords.longitude}, alt=${pos.coords.altitude}, acc=${pos.coords.accuracy}, mobile=${isMobile()}`, navigator);
+      console.log(`xxx GPS updated: lat=${pos.coords.latitude}, log=${pos.coords.longitude}, alt=${pos.coords.altitude}, acc=${pos.coords.accuracy}, mobile=${isMobile()}`, navigator);
+      // alert(`GPS updated: lat=${pos.coords.latitude}, log=${pos.coords.longitude}, alt=${pos.coords.altitude}, acc=${pos.coords.accuracy}, mobile=${isMobile()}`, navigator);
 
       console.log('xxxxx pos coordd', pos.coords)
       if (first.current) {
